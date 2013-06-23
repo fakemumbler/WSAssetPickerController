@@ -28,6 +28,9 @@
 @interface WSAssetTableViewController () <WSAssetsTableViewCellDelegate>
 @property (nonatomic, strong) NSMutableArray *fetchedAssets;
 @property (nonatomic, readonly) NSInteger assetsPerRow;
+
+- (BOOL)isAssets:(NSArray *)assets includeAsset:(ALAsset *)asset;
+
 @end
 
 
@@ -133,14 +136,13 @@
     // (e.g. if user closes, opens Photos and deletes/takes a photo, we'll get out of range/other error when they come back.
     // IDEA: Perhaps the best solution, since this is a modal controller, is to close the modal controller.
     
-    NSLog(@"selected assets: %@", self.assetPickerState.selectedAssets);
-    
+    __weak WSAssetTableViewController *weakSelf = self;
     dispatch_queue_t enumQ = dispatch_queue_create("AssetEnumeration", NULL);
     
     dispatch_async(enumQ, ^{
         
         [self.assetsGroup enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-            
+            WSAssetTableViewController *strongSelf = weakSelf;
             if (!result || index == NSNotFound) {
                 DLog(@"Done fetching.");
                 
@@ -154,7 +156,7 @@
             
             WSAssetWrapper *assetWrapper = [[WSAssetWrapper alloc] initWithAsset:result];
             
-            if ( [self.assetPickerState.selectedAssets containsObject:result] )
+            if ( [strongSelf isAssets:strongSelf.assetPickerState.selectedAssets includeAsset:result] )
             {
                 assetWrapper.selected = YES;
             }
@@ -249,6 +251,18 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 { 
 	return ROW_HEIGHT;
+}
+
+- (BOOL)isAssets:(NSArray *)assets includeAsset:(ALAsset *)asset
+{
+    for ( ALAsset *assetInArray in assets )
+    {
+        if ( [[[assetInArray valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString]] )
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end
