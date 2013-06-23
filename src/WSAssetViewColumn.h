@@ -28,6 +28,4 @@
 
 - (id)initWithImage:(UIImage *)thumbnail;
 
-- (void)setShouldSelectItemBlock:(BOOL(^)(NSInteger column))shouldSelectItemBlock;
-
 @end

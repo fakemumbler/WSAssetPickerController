@@ -20,10 +20,6 @@
 #import "WSAssetPickerController.h"
 #import "WSAssetPickerState.h"
 #import "WSAlbumTableViewController.h"
-#import <AssetsLibrary/AssetsLibrary.h>
-
-#define STATE_KEY @"state"
-#define SELECTED_COUNT_KEY @"selectedCount"
 
 @interface WSAssetPickerController ()
 @property (nonatomic, strong) WSAssetPickerState *assetPickerState;
@@ -34,8 +30,7 @@
 
 @implementation WSAssetPickerController
 
-@dynamic selectedAssets;
-
+@synthesize selectedAssets = _selectedAssets;
 @synthesize assetPickerState = _assetPickerState;
 @synthesize selectedCount = _selectedCount;
 @synthesize originalStatusBarStyle = _originalStatusBarStyle;
@@ -59,7 +54,8 @@
     return self;
 }
 
-#pragma mark - Accessors -
+#define STATE_KEY @"state"
+#define SELECTED_COUNT_KEY @"selectedCount"
 
 - (WSAssetPickerState *)assetPickerState
 {
@@ -69,20 +65,19 @@
     return _assetPickerState;
 }
 
-- (void)setSelectionLimit:(NSInteger)selectionLimit
+- (void)setSelectedAssets:(NSArray *)selectedAssets
 {
-    if (_selectionLimit != selectionLimit) {
-        _selectionLimit = selectionLimit;
-        self.assetPickerState.selectionLimit = _selectionLimit;
+    self.assetPickerState.selectedAssets = selectedAssets;
+}
+
+- (void)setAssetsLibrary:(ALAssetsLibrary *)assetsLibrary
+{
+    if ( [self.viewControllers[0] isKindOfClass:[WSAlbumTableViewController class]] )
+    {
+        WSAlbumTableViewController *rootController = (WSAlbumTableViewController *)self.viewControllers[0];
+        rootController.assetsLibrary = assetsLibrary;
     }
 }
-
-- (NSArray *)selectedAssets
-{
-    return self.assetPickerState.selectedAssets;
-}
-
-#pragma mark - Overrides -
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -114,10 +109,12 @@
     
     if ([STATE_KEY isEqualToString:keyPath]) {     
         
+        DLog(@"State Changed: %@", change);
+        
         // Cast the delegate to the assetPickerDelegate.
         id <WSAssetPickerControllerDelegate> delegate = (id <WSAssetPickerControllerDelegate>)self.delegate;
         
-        if (WSAssetPickerStatePickingCanceled == self.assetPickerState.state) {
+        if (WSAssetPickerStatePickingCancelled == self.assetPickerState.state) {
             if ([delegate conformsToProtocol:@protocol(WSAssetPickerControllerDelegate)]) {
                 [delegate assetPickerControllerDidCancel:self];
             }
@@ -125,14 +122,11 @@
             if ([delegate conformsToProtocol:@protocol(WSAssetPickerControllerDelegate)]) {
                 [delegate assetPickerController:self didFinishPickingMediaWithAssets:self.assetPickerState.selectedAssets];
             }
-        } else if (WSAssetPickerStateSelectionLimitReached == self.assetPickerState.state) {
-            if ([delegate respondsToSelector:@selector(assetPickerControllerDidReachSelectionLimit:)]) {
-                [delegate assetPickerControllerDidReachSelectionLimit:self];
-            }
         }
     } else if ([SELECTED_COUNT_KEY isEqualToString:keyPath]) {
         
         self.selectedCount = self.assetPickerState.selectedCount;
+        DLog(@"Total selected: %d", self.assetPickerState.selectedCount);
     }
 }
 

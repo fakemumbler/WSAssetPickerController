@@ -22,7 +22,6 @@
 
 @interface WSAssetViewColumn ()
 @property (nonatomic, weak) UIImageView *selectedView;
-@property (nonatomic, strong) BOOL (^shouldSelectItem)(NSInteger column);
 @end
 
 
@@ -61,10 +60,6 @@
     return self;
 }
 
-- (void)setShouldSelectItemBlock:(BOOL(^)(NSInteger column))shouldSelectItemBlock
-{
-    self.shouldSelectItem = shouldSelectItemBlock;
-}
 
 #pragma mark - Setters/Getters
 
@@ -104,15 +99,11 @@
 
 - (void)userDidTapAction:(UITapGestureRecognizer *)sender
 {   
+    // Tell the delegate.
     if (sender.state == UIGestureRecognizerStateEnded) {
         
         // Set the selection state.
-        BOOL canSelect = YES;
-        if (self.shouldSelectItem)
-            canSelect = self.shouldSelectItem(self.column);
-        
-        self.selected = (canSelect && (self.selected == NO));
+        self.selected = !self.isSelected;
     }
 }
-
 @end

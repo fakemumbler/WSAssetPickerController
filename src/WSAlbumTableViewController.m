@@ -20,11 +20,9 @@
 #import "WSAlbumTableViewController.h"
 #import "WSAssetPickerState.h"
 #import "WSAssetTableViewController.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 
 
 @interface WSAlbumTableViewController ()
-@property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) NSMutableArray *assetGroups; // Model (all groups of assets).
 @end
 
@@ -65,6 +63,8 @@
     self.wantsFullScreenLayout = YES;
     
     self.assetPickerState.state = WSAssetPickerStatePickingAlbum;
+    
+    DLog(@"\n*********************************\n\nShowing Album Picker\n\n*********************************");
 }
 
 
@@ -115,7 +115,7 @@
 
 - (void)cancelButtonAction:(id)sender 
 {    
-    self.assetPickerState.state = WSAssetPickerStatePickingCanceled;
+    self.assetPickerState.state = WSAssetPickerStatePickingCancelled;
 }
 
 

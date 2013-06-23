@@ -18,21 +18,18 @@
 //  limitations under the License.
 
 #import <Foundation/Foundation.h>
-#import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
     WSAssetPickerStateInitializing,
     WSAssetPickerStatePickingAlbum,
     WSAssetPickerStatePickingAssets,
-    WSAssetPickerStateSelectionLimitReached,
     WSAssetPickerStatePickingDone,
-    WSAssetPickerStatePickingCanceled
+    WSAssetPickerStatePickingCancelled
 } WSAssetPickingState;
 
 @interface WSAssetPickerState : NSObject
-@property (nonatomic, readonly) NSArray *selectedAssets;
+@property (nonatomic, retain) NSArray *selectedAssets;
 @property (nonatomic, readwrite) NSUInteger selectedCount;
-@property (nonatomic, readwrite) NSInteger selectionLimit;
 @property (nonatomic, readwrite) WSAssetPickingState state;
 
 - (void)changeSelectionState:(BOOL)selected forAsset:(ALAsset *)asset;

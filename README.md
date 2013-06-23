@@ -1,3 +1,9 @@
+**Note**: This is a fork from [w5mith/WSAssetPickerController](https://github.com/w5mith/WSAssetPickerController). This version make changes to the image picker controller so that pre-selection is allowed (Some of the images in the image picker view are selected when they are shown).
+
+You can use this version with cocoapods:
+
+pod '
+
 ## Description
 
 This is an iOS, Objective-C alternative to `UIImagePickerController` that looks almost exactly the same, but provides the ability to select multiple images. It's as easy to setup as `UIImagePickerController` and it works in both portrait and landscape orientations. It requires the addition of **AssetsLibrary.framework**. This code uses **ARC**.

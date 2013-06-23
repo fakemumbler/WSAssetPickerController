@@ -35,8 +35,6 @@
 
 @protocol WSAssetsTableViewCellDelegate <NSObject>
 
-- (BOOL)assetsTableViewCell:(WSAssetsTableViewCell *)cell shouldSelectAssetAtColumn:(NSUInteger)column;
-
 - (void)assetsTableViewCell:(WSAssetsTableViewCell *)cell didSelectAsset:(BOOL)selected atColumn:(NSUInteger)column;
 
 @end

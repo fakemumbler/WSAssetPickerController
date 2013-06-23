@@ -23,11 +23,9 @@
 
 @interface WSAssetPickerController : UINavigationController
 
-@property (nonatomic, readonly) NSArray *selectedAssets;
+@property (nonatomic, retain) NSArray *selectedAssets;
 @property (nonatomic, readonly) NSUInteger selectedCount; // Observable via key-value observing.
-
-// Limit the number of assets that can be selected.
-@property (nonatomic, readwrite) NSInteger selectionLimit;
+@property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 
 // Designated initializer.
 - (id)initWithDelegate:(id<WSAssetPickerControllerDelegate>)delegate;
@@ -42,8 +40,5 @@
 
 // Called when the done button is tapped.
 - (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets;
-
-// Called when the selection limit is reached.
-- (void)assetPickerControllerDidReachSelectionLimit:(WSAssetPickerController *)sender;
 
 @end

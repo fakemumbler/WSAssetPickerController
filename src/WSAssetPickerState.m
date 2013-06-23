@@ -44,7 +44,7 @@
     
     // Clear the selcted assets and count.
     if (WSAssetPickerStatePickingAlbum == _state) {
-        [self.selectedAssetsSet removeAllObjects];
+//        [self.selectedAssetsSet removeAllObjects];
         self.selectedCount = 0;
     }
 }
@@ -60,6 +60,11 @@
 - (NSArray *)selectedAssets
 {
     return [[self.selectedAssetsSet array] copy];
+}
+
+- (void)setSelectedAssets:(NSArray *)selectedAssets
+{
+    _selectedAssetsSet = [[NSMutableOrderedSet alloc] initWithArray:selectedAssets];
 }
 
 - (void)changeSelectionState:(BOOL)selected forAsset:(ALAsset *)asset

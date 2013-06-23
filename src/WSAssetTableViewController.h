@@ -18,7 +18,6 @@
 //  limitations under the License.
 
 #import <UIKit/UIKit.h>
-#import <AssetsLibrary/AssetsLibrary.h>
 
 @class WSAssetPickerState;
 
