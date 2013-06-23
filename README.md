@@ -2,7 +2,17 @@
 
 You can use this version with cocoapods:
 
-pod '
+	pod 'WSAssetPickerController@tonyzonghui', '~>0.0.1'
+
+Example:
+
+```
+WSAssetPickerController *assetPicker = [[WSAssetPickerController alloc] initWithDelegate:self];
+assetPicker.selectedAssets = _selectedPhotos;
+assetPicker.assetsLibrary = _assetLibrary;
+[self presentViewController:assetPicker animated:YES completion:nil];
+```
+** We need to pass in an ALAssetLibrary instance and make sure that the instance is alive when we are referencing the ALAsset instances returned from the AssetPicker. ALAsset objects are no longer accessible when the ALAssetLibrary who is owning them get destroyed.
 
 ## Description
 
