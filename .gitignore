@@ -20,4 +20,3 @@ build/*
 *.pbxuser
 *.xcworkspace
 xcuserdata
-*.podspec
