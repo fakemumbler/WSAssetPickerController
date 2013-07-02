@@ -108,9 +108,7 @@
     if (![object isEqual:self.assetPickerState]) return;
     
     if ([STATE_KEY isEqualToString:keyPath]) {     
-        
-        DLog(@"State Changed: %@", change);
-        
+
         // Cast the delegate to the assetPickerDelegate.
         id <WSAssetPickerControllerDelegate> delegate = (id <WSAssetPickerControllerDelegate>)self.delegate;
         
@@ -126,7 +124,6 @@
     } else if ([SELECTED_COUNT_KEY isEqualToString:keyPath]) {
         
         self.selectedCount = self.assetPickerState.selectedCount;
-        DLog(@"Total selected: %d", self.assetPickerState.selectedCount);
     }
 }
 
