@@ -72,7 +72,16 @@
     if (selected) {
         [self.selectedAssetsSet addObject:asset];
     } else {
-        [self.selectedAssetsSet removeObject:asset];
+        // hack since when we re-enter we get new addresses (and can't properly deselect)
+        // Wish ALAsset implemented hash/isEqual (can't seem to get category override to work)
+        ALAsset *toRemove = nil;
+        for (ALAsset *existing in self.selectedAssetsSet) {
+            if ([[asset valueForProperty:ALAssetPropertyAssetURL]
+                 isEqual:[existing valueForProperty:ALAssetPropertyAssetURL]]) {
+                toRemove = existing;
+            }
+        }
+        [self.selectedAssetsSet removeObject:toRemove];
     }
     
     // Update the observable count property.
